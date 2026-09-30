@@ -41,6 +41,11 @@ public class PetService {
         return mapToPetDto(petRepository.getPetById(id));
     }
 
+    public PetDTO createPet(String name, String species) {
+        Pet newPet = petRepository.savePet(name, species);
+        return mapToPetDto(newPet);
+    }
+
     private PetDTO mapToPetDto(Pet pet) {
         return new PetDTO(
                 pet.getName(),

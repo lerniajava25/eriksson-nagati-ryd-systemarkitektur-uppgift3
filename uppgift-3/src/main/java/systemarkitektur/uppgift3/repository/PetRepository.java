@@ -1,5 +1,6 @@
 package systemarkitektur.uppgift3.repository;
 
+import jakarta.inject.Inject;
 import systemarkitektur.uppgift3.model.Pet;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * The type Pet repository.
  */
+
 public class PetRepository {
     private final ConcurrentHashMap<Long, Pet> pets = new ConcurrentHashMap<>();
     private final AtomicLong id = new AtomicLong(0);
@@ -18,6 +20,7 @@ public class PetRepository {
      * Instantiates a new Pet repository.
      * (with some test data)
      */
+    @Inject
     public PetRepository() {
         // Loading some test data
         savePet("Bella", "Dog");
