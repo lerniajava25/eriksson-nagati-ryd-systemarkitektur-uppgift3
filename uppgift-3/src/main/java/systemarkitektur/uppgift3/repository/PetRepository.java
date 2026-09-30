@@ -34,7 +34,7 @@ public class PetRepository {
      * @return the pet
      */
     public Pet savePet(String name, String species) {
-        long newId = id.incrementAndGet();
+        long newId = id.getAndIncrement();
         Pet newPet = new Pet(name, species);
         pets.put(newId, newPet);
         return newPet;
