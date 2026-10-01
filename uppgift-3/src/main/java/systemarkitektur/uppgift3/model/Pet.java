@@ -1,5 +1,6 @@
 package systemarkitektur.uppgift3.model;
 
+
 /**
  * The type Pet.
  */
@@ -37,7 +38,7 @@ public class Pet {
      * @param hungerLevel the hunger level
      */
     public void setHungerLevel(int hungerLevel) {
-        this.hungerLevel = hungerLevel;
+        this.hungerLevel = Math.max(0, Math.min(hungerLevel, 100));
     }
 
     /**
@@ -55,7 +56,7 @@ public class Pet {
      * @param happiness the happiness
      */
     public void setHappiness(int happiness) {
-        this.happiness = happiness;
+        this.happiness = Math.max(0, Math.min(happiness, 100));
     }
 
     /**
