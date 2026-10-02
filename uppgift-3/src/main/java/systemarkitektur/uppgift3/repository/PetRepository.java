@@ -1,5 +1,6 @@
 package systemarkitektur.uppgift3.repository;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.NotFoundException;
@@ -13,6 +14,7 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * The type Pet repository.
  */
+@ApplicationScoped
 public class PetRepository {
     private final ConcurrentHashMap<Long, PetDTO> pets = new ConcurrentHashMap<>();
     private final AtomicLong id = new AtomicLong(1);
