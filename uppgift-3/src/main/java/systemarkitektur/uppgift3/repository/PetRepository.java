@@ -45,13 +45,28 @@ public class PetRepository {
     }
 
     /**
+     * Create pet pet dto.
+     *
+     * @param name        the name
+     * @param species     the species
+     * @param hungerLevel the hunger level
+     * @param happiness   the happiness
+     * @return the pet dto
+     */
+    public PetDTO createPet(String name, String species, int hungerLevel, int happiness) {
+        long newId = id.getAndIncrement();
+        PetDTO newPetDTO = new PetDTO(name, species, hungerLevel, happiness);
+        pets.put(newId, newPetDTO);
+        return newPetDTO;
+    }
+    /**
      * Create a pet from a pet.
      *
      * @param petdto the pet
      * @return the pet as PetDTO
      */
     public PetDTO createPet(@Valid PetDTO petdto) {
-        return createPet(petdto.name(), petdto.species());
+        return createPet(petdto.name(), petdto.species(), petdto.hungerLevel(), petdto.happiness());
     }
 
     /**
