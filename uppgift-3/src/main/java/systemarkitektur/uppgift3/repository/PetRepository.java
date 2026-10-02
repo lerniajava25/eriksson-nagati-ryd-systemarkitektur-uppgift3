@@ -1,7 +1,9 @@
 package systemarkitektur.uppgift3.repository;
 
 import jakarta.inject.Inject;
-import systemarkitektur.uppgift3.model.Pet;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.NotFoundException;
+import systemarkitektur.uppgift3.dto.PetDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,9 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * The type Pet repository.
  */
-
 public class PetRepository {
-    private final ConcurrentHashMap<Long, Pet> pets = new ConcurrentHashMap<>();
-    private final AtomicLong id = new AtomicLong(0);
+    private final ConcurrentHashMap<Long, PetDTO> pets = new ConcurrentHashMap<>();
+    private final AtomicLong id = new AtomicLong(1);
 
     /**
      * Instantiates a new Pet repository.
@@ -23,24 +24,34 @@ public class PetRepository {
     @Inject
     public PetRepository() {
         // Loading some test data
-        savePet("Bella", "Dog");
-        savePet("Max", "Cat");
-        savePet("Charlie", "Dog");
-        savePet("Lucy", "Cat");
+        createPet("Bella", "Dog");
+        createPet("Max", "Cat");
+        createPet("Charlie", "Dog");
+        createPet("Lucy", "Cat");
     }
 
     /**
-     * Create pet pet.
+     * Create a pet from name and species.
      *
      * @param name    the name
      * @param species the species
      * @return the pet
      */
-    public Pet savePet(String name, String species) {
+    public PetDTO createPet(String name, String species) {
         long newId = id.getAndIncrement();
-        Pet newPet = new Pet(name, species);
-        pets.put(newId, newPet);
-        return newPet;
+        PetDTO newPetDTO = new PetDTO(name, species, 0, 100);
+        pets.put(newId, newPetDTO);
+        return newPetDTO;
+    }
+
+    /**
+     * Create a pet from a pet.
+     *
+     * @param petdto the pet
+     * @return the pet as PetDTO
+     */
+    public PetDTO createPet(@Valid PetDTO petdto) {
+        return createPet(petdto.name(), petdto.species());
     }
 
     /**
@@ -48,7 +59,7 @@ public class PetRepository {
      *
      * @return all pets in the repository
      */
-    public List<Pet> getAllPets() {
+    public List<PetDTO> getAllPets() {
         return new ArrayList<>(pets.values());
     }
 
@@ -56,57 +67,83 @@ public class PetRepository {
      * Gets pet by id.
      *
      * @param id the id
-     * @return a pet by id
+     * @return the pet by id
      */
-    public Pet getPetById(long id) {
-        return pets.get(id);
+    public PetDTO getPetById(long id) {
+        if (pets.containsKey(id)) {
+            return pets.get(id);
+        } else {
+            throw new NotFoundException("Pet with id " + id + " does not exist");
+        }
     }
 
+
     /**
-     * Delete pet by id boolean.
+     * Delete pet by id.
      *
      * @param id the id
-     * @return boolean
-     * (true if the pet was deleted,
-     * false otherwise)
      */
-    public boolean deletePetById(long id) {
-        int currentSize = pets.size();
+    public void deletePetById(long id) {
         pets.remove(id);
-        return currentSize != pets.size();
     }
 
     /**
-     * Feed pet by id boolean.
+     * Feed pet by id.
      *
      * @param id the id
-     * @return boolean
-     * (true if the pet was fed,
-     * false otherwise)
      */
-    public boolean feedPetById(long id) {
-        Pet pet = pets.get(id);
-        if (pet != null) {
-            pet.setHungerLevel(pet.getHungerLevel() - 10);
-            return true;
+    public void feedPetById(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
+            int hungerLevel = Math.clamp(pet.hungerLevel() - 10L, 0, 100);
+            return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
+        });
+        if (updatedPet == null) {
+            throw new NotFoundException("Pet with id " + id + " does not exist");
         }
-        return false;
     }
 
     /**
-     * Play with pet by id boolean.
+     * Play with pet by id.
      *
      * @param id the id
-     * @return boolean
-     * (true if the pet was played
-     * with successfully, false otherwise)
      */
-    public boolean playWithPetById(long id) {
-        Pet pet = pets.get(id);
-        if (pet != null) {
-            pet.setHappiness(pet.getHappiness() + 10);
-            return true;
+    public void playWithPetById(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
+            int happiness = Math.clamp(pet.happiness() + 10L, 0, 100);
+            return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
+        });
+        if (updatedPet == null) {
+            throw new NotFoundException("Pet with id " + id + " does not exist");
         }
-        return false;
+    }
+
+    /**
+     * Increase a pet's hunger level.
+     *
+     * @param id the id
+     */
+    public void increaseHungerLevel(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
+            int hungerLevel = Math.clamp(pet.hungerLevel() + 10L, 0, 100);
+            return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
+        });
+        if (updatedPet == null) {
+            throw new NotFoundException("Pet with id " + id + " does not exist");
+        }
+    }
+
+    /**
+     * Decrease a pet's happiness level.
+     *
+     * @param id the id
+     */
+    public void decreaseHappiness(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
+            int happinessLevel = Math.clamp(pet.happiness() - 10L, 0, 100);
+            return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happinessLevel);
+        });
+        if (updatedPet == null) {
+            throw new NotFoundException("Pet with id " + id + " does not exist");
+        }
     }
 }

@@ -5,8 +5,9 @@ import jakarta.inject.Inject;
 
 import java.util.List;
 
-import systemarkitektur.uppgift3.model.Pet;
+import jakarta.validation.Valid;
 import systemarkitektur.uppgift3.repository.PetRepository;
+import systemarkitektur.uppgift3.dto.PetDTO;
 
 /**
  * The type Pet service.
@@ -32,7 +33,6 @@ public class PetService {
      */
     public List<PetDTO> getAllPets() {
         return petRepository.getAllPets().stream()
-                .map(this::mapToPetDto)
                 .toList();
     }
 
@@ -43,7 +43,7 @@ public class PetService {
      * @return the pet by id as a PetDTO
      */
     public PetDTO getPetById(int id) {
-        return mapToPetDto(petRepository.getPetById(id));
+        return petRepository.getPetById(id);
     }
 
     /**
@@ -54,8 +54,26 @@ public class PetService {
      * @return the new pet as a petDTO
      */
     public PetDTO createPet(String name, String species) {
-        Pet newPet = petRepository.savePet(name, species);
-        return mapToPetDto(newPet);
+        return petRepository.createPet(name, species);
+    }
+
+    /**
+     * Create pet from a petdto.
+     *
+     * @param petdto the petDTO
+     * @return the pet dto
+     */
+    public PetDTO createPet(@Valid PetDTO petdto) {
+        return petRepository.createPet(petdto);
+    }
+
+    /**
+     * Delete pet by id.
+     *
+     * @param id the id
+     */
+    public void deletePetById(int id) {
+        petRepository.deletePetById(id);
     }
 
     /**
@@ -64,9 +82,16 @@ public class PetService {
      * @param id the id
      */
     public void feedPetById(int id) {
-        if (!petRepository.feedPetById(id)) {
-            throw new IllegalArgumentException("Pet with id " + id + " does not exist");
-        }
+        petRepository.feedPetById(id);
+    }
+
+    /**
+     * Increase hunger level.
+     *
+     * @param id the id
+     */
+    public void increaseHungerLevel(int id) {
+        petRepository.increaseHungerLevel(id);
     }
 
     /**
@@ -75,19 +100,17 @@ public class PetService {
      * @param id the id
      */
     public void playWithPetById(int id) {
-        if (!petRepository.playWithPetById(id)) {
-            throw new IllegalArgumentException("Pet with id " + id + " does not exist");
-        }
+        petRepository.playWithPetById(id);
     }
 
-    // Private method that maps a Pet object to a PetDTO object.
-    private PetDTO mapToPetDto(Pet pet) {
-        return new PetDTO(
-                pet.getName(),
-                pet.getSpecies(),
-                pet.getHungerLevel(),
-                pet.getHappiness()
-        );
+    /**
+     * Decrease a pet's happiness.
+     *
+     * @param id the id
+     */
+    public void decreaseHappiness(int id) {
+        petRepository.decreaseHappiness(id);
     }
+
 }
 
