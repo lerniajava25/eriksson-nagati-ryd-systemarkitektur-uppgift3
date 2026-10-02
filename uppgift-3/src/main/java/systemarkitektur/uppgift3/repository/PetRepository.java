@@ -85,11 +85,11 @@ public class PetRepository {
      * @return the pet by id
      */
     public PetDTO getPetById(long id) {
-        if (pets.containsKey(id)) {
-            return pets.get(id);
-        } else {
-            throw new NotFoundException("Pet with id " + id + " does not exist");
+        PetDTO pet = pets.get(id);
+        if (pet == null) {
+        throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return pet;
     }
 
 
