@@ -41,7 +41,7 @@ public class PetRepository {
      */
     public PetDTO createPet(String name, String species) {
         long newId = id.getAndIncrement();
-        PetDTO newPetDTO = new PetDTO(name, species, 0, 100);
+        PetDTO newPetDTO = new @Valid PetDTO(name, species, 0, 100);
         pets.put(newId, newPetDTO);
         return newPetDTO;
     }
@@ -57,7 +57,7 @@ public class PetRepository {
      */
     public PetDTO createPet(String name, String species, int hungerLevel, int happiness) {
         long newId = id.getAndIncrement();
-        PetDTO newPetDTO = new PetDTO(name, species, hungerLevel, happiness);
+        PetDTO newPetDTO = new @Valid PetDTO(name, species, hungerLevel, happiness);
         pets.put(newId, newPetDTO);
         return newPetDTO;
     }
@@ -112,7 +112,7 @@ public class PetRepository {
     public void feedPetById(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int hungerLevel = Math.clamp(pet.hungerLevel() - 10L, 0, 100);
-            return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
+            return new @Valid PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
         });
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
@@ -127,7 +127,7 @@ public class PetRepository {
     public void playWithPetById(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int happiness = Math.clamp(pet.happiness() + 10L, 0, 100);
-            return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
+            return new @Valid PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
         });
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");

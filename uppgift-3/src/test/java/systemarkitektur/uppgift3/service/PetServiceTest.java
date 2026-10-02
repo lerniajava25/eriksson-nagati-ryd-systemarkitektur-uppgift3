@@ -35,13 +35,17 @@ class PetServiceTest {
     }
 
     @Test
-    @DisplayName("Should create a new pet in the repository")
+    @DisplayName("Should create 2 new pet in the repository")
     void createPet() {
         assertAll(
                 () -> assertEquals(4, petService.getAllPets().size()),
                 () -> petService.createPet("Max", "Cat"),
                 () -> assertEquals(5, petService.getAllPets().size()),
-                () -> assertEquals(testPetDTO2, petService.getPetById(5))
+                () -> petService.createPet(testPetDTO1),
+                () -> assertEquals(6, petService.getAllPets().size()),
+                () -> assertEquals(testPetDTO2, petService.getPetById(5)),
+                () -> assertEquals(testPetDTO1, petService.getPetById(6)),
+                () -> assertEquals(50, petService.getPetById(6).hungerLevel())
         );
     }
 
