@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f76438dd-a56d-4497-9c5f-65331d79ae9a" name="Changes" comment="Add IntelliJ IDEA project configuration files for uppgift-3 module">
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uppgift-3/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/uppgift-3/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uppgift-3/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/uppgift-3/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/uppgift-3/src/test/java/systemarkitektur/uppgift3/service/PetServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/uppgift-3/src/test/java/systemarkitektur/uppgift3/service/PetServiceTest.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="EmbeddingIndexingInfo">
+    <option name="cachedIndexableFilesCount" value="27" />
+    <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;anteman-swe&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:lerniajava25/eriksson-nagati-ryd-systemarkitektur-uppgift3.git&quot;,
+    &quot;accountId&quot;: &quot;17d716e9-bca2-49da-926e-92b831beb725&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0000000036689134" />
+      <entry key="S2" value="1.0077829387014865" />
+      <entry key="S5" value="1.1456250237647214" />
+      <entry key="S10" value="1.4406558972023533" />
+      <entry key="S30" value="2.4601587877770794" />
+      <entry key="S60" value="4.00227671694168" />
+      <entry key="M2" value="6.476023195720003" />
+      <entry key="M5" value="9.709069749387446" />
+      <entry key="M10" value="14.092763649142148" />
+      <entry key="M15" value="20.728357459934312" />
+      <entry key="M30" value="40.04798893421282" />
+      <entry key="H1" value="61.42533497298403" />
+      <entry key="H2" value="77.56982305237327" />
+      <entry key="H4" value="87.52602444750597" />
+      <entry key="D1" value="96.97272910920007" />
+      <entry key="W1" value="98.7074414753679" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="1.5846479281294275E-109" />
+      <entry key="S2" value="6.309329326912073E-28" />
+      <entry key="S5" value="1.3182363369370974E-11" />
+      <entry key="S10" value="3.6307524522295615E-6" />
+      <entry key="S30" value="0.015369705514860806" />
+      <entry key="S60" value="0.12397461641345478" />
+      <entry key="M2" value="0.35210048230647345" />
+      <entry key="M5" value="0.664130652029808" />
+      <entry key="M10" value="0.9893154460568677" />
+      <entry key="M15" value="1.4420254058556765" />
+      <entry key="M30" value="2.7812057714418423" />
+      <entry key="H1" value="4.294202692877249" />
+      <entry key="H2" value="5.4509521547398965" />
+      <entry key="H4" value="6.168916819899568" />
+      <entry key="D1" value="6.852896896122511" />
+      <entry key="W1" value="6.978764633748889" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="4.651552724823912E-4" />
+      <entry key="MS500" value="0.21553588977873836" />
+      <entry key="S2" value="0.689070183409188" />
+      <entry key="S5" value="1.0025484225184889" />
+      <entry key="S10" value="1.3632496572967454" />
+      <entry key="S30" value="2.441194554828123" />
+      <entry key="S60" value="4.103183393675896" />
+      <entry key="M2" value="6.812280716293405" />
+      <entry key="M5" value="10.364747665989716" />
+      <entry key="M10" value="15.076909474586556" />
+      <entry key="M15" value="22.166150499897483" />
+      <entry key="M30" value="42.8259536848898" />
+      <entry key="H1" value="65.71728937049036" />
+      <entry key="H2" value="83.01941205067716" />
+      <entry key="H4" value="93.69418563933647" />
+      <entry key="D1" value="103.82548832062903" />
+      <entry key="W1" value="105.68618613120664" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3KGVOzjshHlHaAnx2zvA53U1f2F" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "petservice",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/anders/Programmering/eriksson-nagati-ryd-systemarkitektur-uppgift3",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "to.speed.mode.migration.done": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10968.63" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10968.63" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f76438dd-a56d-4497-9c5f-65331d79ae9a" name="Changes" comment="" />
+      <created>1791183863147</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1791183863147</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add IntelliJ IDEA project configuration files for uppgift-3 module" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add IntelliJ IDEA project configuration files for uppgift-3 module" />
+  </component>
+</project>
