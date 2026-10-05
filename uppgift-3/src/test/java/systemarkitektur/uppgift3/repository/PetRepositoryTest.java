@@ -1,9 +1,10 @@
-package systemarkitektur.uppgift3.service;
+package systemarkitektur.uppgift3.repository;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import systemarkitektur.uppgift3.dto.PetDTO;
-import systemarkitektur.uppgift3.repository.PetRepository;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,5 +36,14 @@ class PetRepositoryTest {
         petRepository.createPet("Pelle", "dog");
         assertNotNull(petRepository.getPetById(repoLength + 1));
         assertEquals("Pelle", petRepository.getPetById(repoLength + 1).name());
+    }
+
+    @Test
+    @DisplayName("Should return a sequence of pets from the repository")
+    void getSequenceOfPets() {
+        List<PetDTO> sequence = petRepository.getSequenceOfPets(2, 2);
+        assertEquals(2, sequence.size());
+        assertEquals("Max", sequence.get(0).name());
+        assertEquals("Charlie", sequence.get(1).name());
     }
 }
