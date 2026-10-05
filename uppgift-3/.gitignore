@@ -12,6 +12,20 @@ target/
 *.iws
 *.iml
 *.ipr
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/shelf/
+**/workspace.xml
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive data / Local overrides
+.idea/**/dataSources/
+.idea/**/dataSources.local.xml
 
 ### Eclipse ###
 .apt_generated

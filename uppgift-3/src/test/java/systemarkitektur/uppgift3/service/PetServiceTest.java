@@ -12,7 +12,7 @@ class PetServiceTest {
     PetRepository petRepository = new PetRepository();
     PetService petService = new PetService(petRepository);
 
-    PetDTO testPetDTO1 = new PetDTO("Bella", "Dog",50,100);
+    PetDTO testPetDTO1 = new PetDTO("Bella", "Dog",0,100);
     PetDTO testPetDTO2 = new PetDTO("Max", "Cat",0,100);
 
     @Test
@@ -45,7 +45,7 @@ class PetServiceTest {
                 () -> assertEquals(6, petService.getAllPets().size()),
                 () -> assertEquals(testPetDTO2, petService.getPetById(5)),
                 () -> assertEquals(testPetDTO1, petService.getPetById(6)),
-                () -> assertEquals(50, petService.getPetById(6).hungerLevel())
+                () -> assertEquals(0, petService.getPetById(6).hungerLevel())
         );
     }
 
