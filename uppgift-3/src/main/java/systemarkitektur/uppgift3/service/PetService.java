@@ -112,5 +112,16 @@ public class PetService {
         petRepository.decreaseHappiness(id);
     }
 
+    /**
+     * Gets a sequence of pets from id to id + sequenceLength.
+     *
+     * @param id             the id
+     * @param sequenceLength the sequence length
+     * @return the sequence of pets
+     */
+    public List<PetDTO> getSequenceOfPets(Long id, int sequenceLength) {
+        return petRepository.getSequenceOfPets(id, sequenceLength);
+    }
+
 }
 

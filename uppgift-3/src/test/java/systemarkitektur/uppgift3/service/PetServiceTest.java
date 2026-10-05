@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import systemarkitektur.uppgift3.dto.PetDTO;
 import systemarkitektur.uppgift3.repository.PetRepository;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PetServiceTest {
@@ -67,5 +69,17 @@ class PetServiceTest {
         assertEquals(80, petService.getPetById(1).happiness().shortValue());
         petService.playWithPetById(1);
         assertEquals(90, petService.getPetById(1).happiness().shortValue());
+    }
+
+    @Test
+    @DisplayName("Should get a sequence of pets")
+    void getSequenceOfPets() {
+        List<PetDTO> pets = petService.getSequenceOfPets(2L, 3);
+        assertAll(
+                () -> assertEquals(3, pets.size()),
+                () -> assertEquals("Max", pets.getFirst().name()),
+                () -> assertEquals("Charlie", pets.get(1).name()),
+                () -> assertEquals("Lucy", pets.get(2).name())
+        );
     }
 }
