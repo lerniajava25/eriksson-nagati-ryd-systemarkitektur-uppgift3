@@ -8,8 +8,10 @@ import systemarkitektur.uppgift3.dto.PetDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.LongStream;
 
 /**
  * The type Pet repository.
@@ -33,26 +35,12 @@ public class PetRepository {
     }
 
     /**
-     * Create a pet from name and species.
-     *
-     * @param name    the name
-     * @param species the species
-     * @return the pet
-     */
-    public PetDTO createPet(String name, String species) {
-        long newId = id.getAndIncrement();
-        PetDTO newPetDTO = new @Valid PetDTO(name, species, 0, 100);
-        pets.put(newId, newPetDTO);
-        return newPetDTO;
-    }
-
-    /**
-     * Create pet pet dto.
+     * Create a pet from name, species, hungerLevel, happiness.
      *
      * @param name        the name
      * @param species     the species
      * @param hungerLevel the hunger level
-     * @param happiness   the happiness
+     * @param happiness   the happiness level
      * @return the pet dto
      */
     public PetDTO createPet(String name, String species, int hungerLevel, int happiness) {
@@ -61,8 +49,20 @@ public class PetRepository {
         pets.put(newId, newPetDTO);
         return newPetDTO;
     }
+
     /**
-     * Create a pet from a pet.
+     * Create a pet from name and species.
+     *
+     * @param name    the name
+     * @param species the species
+     * @return the pet
+     */
+    public PetDTO createPet(String name, String species) {
+        return createPet(name, species, 0, 100);
+    }
+
+    /**
+     * Create a pet from a pet dto.
      *
      * @param petdto the pet
      * @return the pet as PetDTO
@@ -78,6 +78,20 @@ public class PetRepository {
      */
     public List<PetDTO> getAllPets() {
         return new ArrayList<>(pets.values());
+    }
+
+    /**
+     * Gets a sequence of pets.
+     *
+     * @param id             the id, where the sequence starts
+     * @param sequenceLength the sequence length
+     * @return the sequence of pets
+     */
+    public List<PetDTO> getSequenceOfPets(long id, int sequenceLength) {
+        return LongStream.range(id, id + sequenceLength)
+                .mapToObj(pets::get)
+                .filter(Objects::nonNull)
+                .toList();
     }
 
     /**
