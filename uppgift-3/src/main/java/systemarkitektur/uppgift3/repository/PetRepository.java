@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.LongStream;
 
 /**
  * The type Pet repository.
@@ -88,8 +87,9 @@ public class PetRepository {
      * @return the sequence of pets
      */
     public List<PetDTO> getSequenceOfPets(long id, int sequenceLength) {
-        return LongStream.range(id, id + sequenceLength)
-                .mapToObj(pets::get)
+        return pets.keySet().stream()
+                .filter(key -> key >= id && key < id + sequenceLength)
+                .map(pets::get)
                 .filter(Objects::nonNull)
                 .toList();
     }
