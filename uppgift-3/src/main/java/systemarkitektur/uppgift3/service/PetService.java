@@ -27,11 +27,20 @@ public class PetService {
     }
 
     /**
+     * Instantiates a new Pet service.
+     */
+    protected PetService() {
+        // Is demanded by CDI to be able to create a proxy.
+        this.petRepository = null; // Silencing compiler warning
+    }
+
+    /**
      * Gets all pets.
      *
      * @return the all pets as a list of PetDTO
      */
     public List<PetDTO> getAllPets() {
+        assert petRepository != null;
         return petRepository.getAllPets().stream()
                 .toList();
     }
@@ -43,6 +52,7 @@ public class PetService {
      * @return the pet by id as a PetDTO
      */
     public PetDTO getPetById(int id) {
+        assert petRepository != null;
         return petRepository.getPetById(id);
     }
 
@@ -54,6 +64,7 @@ public class PetService {
      * @return the new pet as a petDTO
      */
     public PetDTO createPet(String name, String species) {
+        assert petRepository != null;
         return petRepository.createPet(name, species);
     }
 
@@ -64,6 +75,7 @@ public class PetService {
      * @return the pet dto
      */
     public PetDTO createPet(@Valid PetDTO petdto) {
+        assert petRepository != null;
         return petRepository.createPet(petdto);
     }
 
@@ -73,6 +85,7 @@ public class PetService {
      * @param id the id
      */
     public void deletePetById(int id) {
+        assert petRepository != null;
         petRepository.deletePetById(id);
     }
 
@@ -82,6 +95,7 @@ public class PetService {
      * @param id the id
      */
     public void feedPetById(int id) {
+        assert petRepository != null;
         petRepository.feedPetById(id);
     }
 
@@ -91,6 +105,7 @@ public class PetService {
      * @param id the id
      */
     public void increaseHungerLevel(int id) {
+        assert petRepository != null;
         petRepository.increaseHungerLevel(id);
     }
 
@@ -100,6 +115,7 @@ public class PetService {
      * @param id the id
      */
     public void playWithPetById(int id) {
+        assert petRepository != null;
         petRepository.playWithPetById(id);
     }
 
@@ -109,6 +125,7 @@ public class PetService {
      * @param id the id
      */
     public void decreaseHappiness(int id) {
+        assert petRepository != null;
         petRepository.decreaseHappiness(id);
     }
 
@@ -120,6 +137,7 @@ public class PetService {
      * @return the sequence of pets
      */
     public List<PetDTO> getSequenceOfPets(Long id, int sequenceLength) {
+        assert petRepository != null;
         return petRepository.getSequenceOfPets(id, sequenceLength);
     }
 
