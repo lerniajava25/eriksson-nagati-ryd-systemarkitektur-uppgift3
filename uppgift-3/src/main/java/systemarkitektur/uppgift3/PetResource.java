@@ -32,9 +32,9 @@ public class PetResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void createPet(@Valid PetDTO petDTO) {
+    public PetDTO createPet(@Valid PetDTO petDTO) {
         assert petService != null;
-        petService.createPet(petDTO);
+        return petService.createPet(petDTO);
     }
 
     @Path("/{id}")
@@ -46,24 +46,22 @@ public class PetResource {
 
     @Path("/{id}")
     @DELETE
-    public void deletePet(@PathParam("id") int id) {
+    public PetDTO deletePet(@PathParam("id") int id) {
         assert petService != null;
-        petService.deletePetById(id);
+        return petService.deletePetById(id);
     }
 
     @Path("{id}/feed")
     @PUT
-    public int feedPet(@PathParam("id") int id) {
+    public PetDTO feedPet(@PathParam("id") int id) {
         assert petService != null;
-        petService.feedPetById(id);
-        return petService.getPetById(id).hungerLevel();
+        return petService.feedPetById(id);
     }
 
     @Path("{id}/play")
     @PUT
-    public int playWithPet(@PathParam("id") int id) {
+    public PetDTO playWithPet(@PathParam("id") int id) {
         assert petService != null;
-        petService.playWithPetById(id);
-        return getPetById(id).happiness();
+        return petService.playWithPetById(id);
     }
 }
