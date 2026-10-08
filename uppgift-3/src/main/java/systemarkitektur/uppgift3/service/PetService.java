@@ -84,9 +84,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void deletePetById(int id) {
+    public PetDTO deletePetById(int id) {
         assert petRepository != null;
-        petRepository.deletePetById(id);
+        return petRepository.deletePetById(id);
     }
 
     /**
@@ -94,9 +94,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void feedPetById(int id) {
+    public PetDTO feedPetById(int id) {
         assert petRepository != null;
-        petRepository.feedPetById(id);
+        return petRepository.feedPetById(id);
     }
 
     /**
@@ -104,9 +104,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void increaseHungerLevel(int id) {
+    public PetDTO increaseHungerLevel(int id) {
         assert petRepository != null;
-        petRepository.increaseHungerLevel(id);
+        return petRepository.increaseHungerLevel(id);
     }
 
     /**
@@ -114,9 +114,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void playWithPetById(int id) {
+    public PetDTO playWithPetById(int id) {
         assert petRepository != null;
-        petRepository.playWithPetById(id);
+        return petRepository.playWithPetById(id);
     }
 
     /**
@@ -124,9 +124,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void decreaseHappiness(int id) {
+    public PetDTO decreaseHappiness(int id) {
         assert petRepository != null;
-        petRepository.decreaseHappiness(id);
+        return petRepository.decreaseHappiness(id);
     }
 
     /**

@@ -114,8 +114,8 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void deletePetById(long id) {
-        pets.remove(id);
+    public PetDTO deletePetById(long id) {
+        return pets.remove(id);
     }
 
     /**
@@ -123,7 +123,7 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void feedPetById(long id) {
+    public PetDTO feedPetById(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int hungerLevel = Math.clamp(pet.hungerLevel() - 10L, 0, 100);
             return new @Valid PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
@@ -131,6 +131,7 @@ public class PetRepository {
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -138,7 +139,7 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void playWithPetById(long id) {
+    public PetDTO playWithPetById(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int happiness = Math.clamp(pet.happiness() + 10L, 0, 100);
             return new @Valid PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
@@ -146,6 +147,7 @@ public class PetRepository {
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -153,7 +155,7 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void increaseHungerLevel(long id) {
+    public PetDTO increaseHungerLevel(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int hungerLevel = Math.clamp(pet.hungerLevel() + 10L, 0, 100);
             return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
@@ -161,6 +163,7 @@ public class PetRepository {
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -168,7 +171,7 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void decreaseHappiness(long id) {
+    public PetDTO decreaseHappiness(long id) {
         PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
             int happinessLevel = Math.clamp(pet.happiness() - 10L, 0, 100);
             return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happinessLevel);
@@ -176,5 +179,6 @@ public class PetRepository {
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 }
