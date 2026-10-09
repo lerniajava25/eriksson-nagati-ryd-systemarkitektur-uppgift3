@@ -7,6 +7,7 @@ import jakarta.ws.rs.core.MediaType;
 import systemarkitektur.uppgift3.dto.PetDTO;
 import systemarkitektur.uppgift3.service.PetService;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,9 +44,40 @@ public class PetResource {
      * @return the pets
      */
     @GET
-    public List<PetDTO> getPets() {
+    public List<PetDTO> getPets(
+            @QueryParam("offset") Integer offset,
+            @QueryParam("limit") Integer limit,
+            @QueryParam("sortBy") String sortBy,
+            @QueryParam("order") String order) {
         assert petService != null;
-        return petService.getAllPets();
+        boolean sequence = (offset != null && limit != null && sortBy == null && order == null) ;
+        boolean sorting = (offset == null && limit == null && sortBy != null && order != null);
+        String sortType = sorting ? "sorted" : "all";
+        String whatToGet = sequence ? "sequence" : sortType;
+        switch (whatToGet) {
+            case "sequence":
+                if (offset <= 0 || limit <= 0) {
+                    return Collections.emptyList();
+                } else {
+                    return petService.getSequenceOfPets((long) offset, limit);
+                }
+
+            case "sorted":
+                return petService.getSortedPets(sortBy, order);
+
+            case "all":
+                return petService.getAllPets();
+
+            default:
+                break;
+        }
+        if (!sequence && !sorting) {
+            return petService.getAllPets();
+        } else if (sequence && (offset <= 0 || limit <= 0)) {
+            return Collections.emptyList();
+        } else {
+            return petService.getSequenceOfPets((long) offset, limit);
+        }
     }
 
     /**
@@ -55,7 +87,7 @@ public class PetResource {
      * @return the pet dto
      */
     @POST
-    @Consumes(MediaType.APPLICATION_JSON)
+    // @Consumes(MediaType.APPLICATION_JSON)
     public PetDTO createPet(@Valid PetDTO petDTO) {
         assert petService != null;
         return petService.createPet(petDTO);

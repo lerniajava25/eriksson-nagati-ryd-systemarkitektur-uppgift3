@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.Set;
 
 import jakarta.validation.Valid;
 import systemarkitektur.uppgift3.repository.PetRepository;
@@ -37,11 +38,22 @@ public class PetService {
     /**
      * Gets all pets.
      *
-     * @return the all pets as a list of PetDTO
+     * @return all pets as a list of PetDTO
      */
     public List<PetDTO> getAllPets() {
         assert petRepository != null;
         return petRepository.getAllPets().stream()
+                .toList();
+    }
+
+    private static final Set<String> ALLOWED_SORT_FIELD = Set.of("name", "species", "hunger", "happiness");
+
+    public List<PetDTO> getSortedPets(String sortBy, String order) {
+        assert petRepository != null;
+        String safeSortValue = ALLOWED_SORT_FIELD.contains(sortBy.toLowerCase()) ? sortBy : "id";
+        boolean isAscending = "asc".equalsIgnoreCase(order);
+        return petRepository.getSortedPets(safeSortValue, isAscending)
+                .stream()
                 .toList();
     }
 
@@ -65,7 +77,23 @@ public class PetService {
      */
     public PetDTO createPet(String name, String species) {
         assert petRepository != null;
-        return petRepository.createPet(name, species);
+        PetDTO newPet = new @Valid PetDTO(name, species, 0, 100);
+        return petRepository.savePet(newPet);
+    }
+
+    /**
+     * Create a pet from name, species, hungerLevel, happiness.
+     *
+     * @param name        the name
+     * @param species     the species
+     * @param hungerLevel the hunger level
+     * @param happiness   the happiness
+     * @return the pet dto
+     */
+    public PetDTO createPet(String name, String species, int hungerLevel, int happiness) {
+        assert petRepository != null;
+        PetDTO newPet = new @Valid PetDTO(name, species, hungerLevel, happiness);
+        return petRepository.savePet(newPet);
     }
 
     /**
@@ -76,7 +104,7 @@ public class PetService {
      */
     public PetDTO createPet(@Valid PetDTO petdto) {
         assert petRepository != null;
-        return petRepository.createPet(petdto);
+        return petRepository.savePet(petdto);
     }
 
     /**
