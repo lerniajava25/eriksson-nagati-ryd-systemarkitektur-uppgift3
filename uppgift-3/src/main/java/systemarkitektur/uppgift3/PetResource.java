@@ -9,6 +9,9 @@ import systemarkitektur.uppgift3.service.PetService;
 
 import java.util.List;
 
+/**
+ * The type Pet resource.
+ */
 @Path("/pets")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -16,20 +19,41 @@ public class PetResource {
 
     private final PetService petService;
 
+    /**
+     * Instantiates a new Pet resource.
+     *
+     * @param petService the pet service
+     */
     @Inject
     public PetResource(PetService petService) {
         this.petService = petService;
     }
+
+    /**
+     * Instantiates a new Pet resource. CDI used to create a proxy.
+     */
     protected PetResource() {
         // Is demanded by CDI to be able to create a proxy.
         this.petService = null; // Silencing compiler warning
     }
+
+    /**
+     * Gets pets.
+     *
+     * @return the pets
+     */
     @GET
     public List<PetDTO> getPets() {
         assert petService != null;
         return petService.getAllPets();
     }
 
+    /**
+     * Create pet.
+     *
+     * @param petDTO the pet dto
+     * @return the pet dto
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public PetDTO createPet(@Valid PetDTO petDTO) {
@@ -37,6 +61,12 @@ public class PetResource {
         return petService.createPet(petDTO);
     }
 
+    /**
+     * Gets pet by id.
+     *
+     * @param id the id
+     * @return the pet by id
+     */
     @Path("/{id}")
     @GET
     public PetDTO getPetById(@PathParam("id") int id) {
@@ -44,6 +74,12 @@ public class PetResource {
         return petService.getPetById(id);
     }
 
+    /**
+     * Delete pet.
+     *
+     * @param id the id
+     * @return the pet dto
+     */
     @Path("/{id}")
     @DELETE
     public PetDTO deletePet(@PathParam("id") int id) {
@@ -51,6 +87,12 @@ public class PetResource {
         return petService.deletePetById(id);
     }
 
+    /**
+     * Feed pet.
+     *
+     * @param id the id
+     * @return the pet dto
+     */
     @Path("{id}/feed")
     @PUT
     public PetDTO feedPet(@PathParam("id") int id) {
@@ -58,6 +100,12 @@ public class PetResource {
         return petService.feedPetById(id);
     }
 
+    /**
+     * Play with a pet.
+     *
+     * @param id the id
+     * @return the pet dto
+     */
     @Path("{id}/play")
     @PUT
     public PetDTO playWithPet(@PathParam("id") int id) {
