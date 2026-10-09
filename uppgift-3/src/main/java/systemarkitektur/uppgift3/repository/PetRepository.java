@@ -34,10 +34,10 @@ public class PetRepository {
     }
 
     /**
-     * Save pet pet dto.
+     * Save pet.
      *
-     * @param petDTO the pet dto
-     * @return the pet dto
+     * @param petDTO the input pet dto
+     * @return a pet dto
      */
     public PetDTO savePet(PetDTO petDTO) {
         long newId = id.getAndIncrement();
@@ -69,6 +69,13 @@ public class PetRepository {
                 .toList();
     }
 
+    /**
+     * Gets sorted pets.
+     *
+     * @param sortBy      the sort by
+     * @param isAscending sort order is ascending
+     * @return the sorted pets
+     */
     public List<PetDTO> getSortedPets(String sortBy, boolean isAscending) {
         return switch (sortBy) {
             case "name" -> new ArrayList<>(pets.values().stream()
@@ -100,7 +107,6 @@ public class PetRepository {
         }
         return pet;
     }
-
 
     /**
      * Delete pet by id.
