@@ -6,9 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.NotFoundException;
 import systemarkitektur.uppgift3.dto.PetDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -34,10 +32,10 @@ public class PetRepository {
     }
 
     /**
-     * Save pet pet dto.
+     * Save pet.
      *
-     * @param petDTO the pet dto
-     * @return the pet dto
+     * @param petDTO the input pet dto
+     * @return a pet dto
      */
     public PetDTO savePet(PetDTO petDTO) {
         long newId = id.getAndIncrement();
@@ -69,22 +67,30 @@ public class PetRepository {
                 .toList();
     }
 
+
+    /**
+     * Gets sorted pets.
+     *
+     * @param sortBy      the sort by
+     * @param isAscending the sort order is ascending
+     * @return the sorted pets
+     */
     public List<PetDTO> getSortedPets(String sortBy, boolean isAscending) {
-        return switch (sortBy) {
-            case "name" -> new ArrayList<>(pets.values().stream()
-                    .sorted((o1, o2) -> isAscending ? o1.name().compareTo(o2.name()) : o2.name().compareTo(o1.name()))
-                    .toList());
-            case "species" -> new ArrayList<>(pets.values().stream()
-                    .sorted((o1, o2) -> isAscending ? o1.species().compareTo(o2.species()) : o2.species().compareTo(o1.species()))
-                    .toList());
-            case "hunger" -> new ArrayList<>(pets.values().stream()
-                    .sorted((o1, o2) -> isAscending ? o1.hungerLevel().compareTo(o2.hungerLevel()) : o2.hungerLevel().compareTo(o1.hungerLevel()))
-                    .toList());
-            case "happiness" -> new ArrayList<>(pets.values().stream()
-                    .sorted((o1, o2) -> isAscending ? o1.happiness().compareTo(o2.happiness()) : o2.happiness().compareTo(o1.happiness()))
-                    .toList());
-            default -> new ArrayList<>(pets.values());
+        Comparator<Map.Entry<Long, PetDTO>> comparator = switch (sortBy.toLowerCase()) {
+            case "id" -> Map.Entry.comparingByKey();
+            case "name" -> Comparator.comparing(e -> e.getValue().name(), String.CASE_INSENSITIVE_ORDER);
+            case "species" -> Comparator.comparing(e -> e.getValue().species(), String.CASE_INSENSITIVE_ORDER);
+            case "hunger" -> Comparator.comparing(e -> e.getValue().hungerLevel());
+            case "happiness" -> Comparator.comparing(e -> e.getValue().happiness());
+            default -> Map.Entry.comparingByKey();
         };
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+        return pets.entrySet().stream()
+                .sorted(comparator)
+                .map(Map.Entry::getValue)
+                .toList();
     }
 
     /**
@@ -100,7 +106,6 @@ public class PetRepository {
         }
         return pet;
     }
-
 
     /**
      * Delete pet by id.

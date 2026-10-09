@@ -58,12 +58,8 @@ public class PetService {
      */
     public List<PetDTO> getSortedPets(String sortBy, String order) {
         assert petRepository != null;
-
-        String safeSortValue =
-                ALLOWED_SORT_FIELD.contains(sortBy.toLowerCase())
-                        ? sortBy
-                        : "id";
-
+        String key = sortBy == null ? "" : sortBy.toLowerCase();
+        String safeSortValue = ALLOWED_SORT_FIELD.contains(key) ? key : "id";
         boolean isAscending = "asc".equalsIgnoreCase(order);
 
         return petRepository.getSortedPets(safeSortValue, isAscending)
@@ -82,52 +78,6 @@ public class PetService {
         return petRepository.getPetById(id);
     }
 
-    /**
-     * Create a new pet.
-     *
-     * @param name    the name
-     * @param species the species
-     * @return the new pet as a PetDTO
-     */
-    public PetDTO createPet(String name, String species) {
-        assert petRepository != null;
-
-        PetDTO newPet = new @Valid PetDTO(
-                name,
-                species,
-                0,
-                100
-        );
-
-        return petRepository.savePet(newPet);
-    }
-
-    /**
-     * Create a pet from name, species, hungerLevel, happiness.
-     *
-     * @param name        the name
-     * @param species     the species
-     * @param hungerLevel the hunger level
-     * @param happiness   the happiness
-     * @return the pet dto
-     */
-    public PetDTO createPet(
-            String name,
-            String species,
-            int hungerLevel,
-            int happiness
-    ) {
-        assert petRepository != null;
-
-        PetDTO newPet = new @Valid PetDTO(
-                name,
-                species,
-                hungerLevel,
-                happiness
-        );
-
-        return petRepository.savePet(newPet);
-    }
 
     /**
      * Create pet from a PetDTO.

@@ -41,7 +41,7 @@ class PetServiceTest {
     void createPet() {
         assertAll(
                 () -> assertEquals(4, petService.getAllPets().size()),
-                () -> petService.createPet("Max", "Cat"),
+                () -> petService.createPet(testPetDTO2),
                 () -> assertEquals(5, petService.getAllPets().size()),
                 () -> petService.createPet(testPetDTO1),
                 () -> assertEquals(6, petService.getAllPets().size()),
