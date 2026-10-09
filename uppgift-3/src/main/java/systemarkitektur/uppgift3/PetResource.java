@@ -48,36 +48,45 @@ public class PetResource {
             @QueryParam("offset") Integer offset,
             @QueryParam("limit") Integer limit,
             @QueryParam("sortBy") String sortBy,
-            @QueryParam("order") String order) {
+            @QueryParam("order") String order,
+            @QueryParam("species") String species) {
+
         assert petService != null;
-        boolean sequence = (offset != null && limit != null && sortBy == null && order == null) ;
-        boolean sorting = (offset == null && limit == null && sortBy != null && order != null);
-        String sortType = sorting ? "sorted" : "all";
-        String whatToGet = sequence ? "sequence" : sortType;
-        switch (whatToGet) {
-            case "sequence":
-                if (offset <= 0 || limit <= 0) {
-                    return Collections.emptyList();
-                } else {
-                    return petService.getSequenceOfPets((long) offset, limit);
-                }
 
-            case "sorted":
-                return petService.getSortedPets(sortBy, order);
+        boolean filtering =
+                species != null && !species.isBlank();
 
-            case "all":
-                return petService.getAllPets();
+        boolean sequence =
+                offset != null
+                        && limit != null
+                        && sortBy == null
+                        && order == null
+                        && !filtering;
 
-            default:
-                break;
+        boolean sorting =
+                offset == null
+                        && limit == null
+                        && sortBy != null
+                        && order != null
+                        && !filtering;
+
+        if (filtering) {
+            return petService.getPetsBySpecies(species);
         }
-        if (!sequence && !sorting) {
-            return petService.getAllPets();
-        } else if (sequence && (offset <= 0 || limit <= 0)) {
-            return Collections.emptyList();
-        } else {
+
+        if (sequence) {
+            if (offset <= 0 || limit <= 0) {
+                return Collections.emptyList();
+            }
+
             return petService.getSequenceOfPets((long) offset, limit);
         }
+
+        if (sorting) {
+            return petService.getSortedPets(sortBy, order);
+        }
+
+        return petService.getAllPets();
     }
 
     /**
@@ -87,7 +96,6 @@ public class PetResource {
      * @return the pet dto
      */
     @POST
-    // @Consumes(MediaType.APPLICATION_JSON)
     public PetDTO createPet(@Valid PetDTO petDTO) {
         assert petService != null;
         return petService.createPet(petDTO);
