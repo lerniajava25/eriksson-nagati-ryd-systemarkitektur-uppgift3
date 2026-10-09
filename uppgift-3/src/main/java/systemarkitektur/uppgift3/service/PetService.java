@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.Set;
 
 import jakarta.validation.Valid;
 import systemarkitektur.uppgift3.repository.PetRepository;
@@ -37,11 +38,23 @@ public class PetService {
     /**
      * Gets all pets.
      *
-     * @return the all pets as a list of PetDTO
+     * @return all pets as a list of PetDTO
      */
     public List<PetDTO> getAllPets() {
         assert petRepository != null;
         return petRepository.getAllPets().stream()
+                .toList();
+    }
+
+    private static final Set<String> ALLOWED_SORT_FIELD = Set.of("name", "species", "hunger", "happiness");
+
+    public List<PetDTO> getSortedPets(String sortBy, String order) {
+        assert petRepository != null;
+        String key = sortBy == null ? "" : sortBy.toLowerCase();
+        String safeSortValue = ALLOWED_SORT_FIELD.contains(key) ? key : "id";
+        boolean isAscending = "asc".equalsIgnoreCase(order);
+        return petRepository.getSortedPets(safeSortValue, isAscending)
+                .stream()
                 .toList();
     }
 
@@ -56,17 +69,6 @@ public class PetService {
         return petRepository.getPetById(id);
     }
 
-    /**
-     * Create a new pet.
-     *
-     * @param name    the name
-     * @param species the species
-     * @return the new pet as a petDTO
-     */
-    public PetDTO createPet(String name, String species) {
-        assert petRepository != null;
-        return petRepository.createPet(name, species);
-    }
 
     /**
      * Create pet from a petdto.
@@ -76,7 +78,7 @@ public class PetService {
      */
     public PetDTO createPet(@Valid PetDTO petdto) {
         assert petRepository != null;
-        return petRepository.createPet(petdto);
+        return petRepository.savePet(petdto);
     }
 
     /**
@@ -84,9 +86,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void deletePetById(int id) {
+    public PetDTO deletePetById(int id) {
         assert petRepository != null;
-        petRepository.deletePetById(id);
+        return petRepository.deletePetById(id);
     }
 
     /**
@@ -94,9 +96,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void feedPetById(int id) {
+    public PetDTO feedPetById(int id) {
         assert petRepository != null;
-        petRepository.feedPetById(id);
+        return petRepository.feedPetById(id);
     }
 
     /**
@@ -104,9 +106,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void increaseHungerLevel(int id) {
+    public PetDTO increaseHungerLevel(int id) {
         assert petRepository != null;
-        petRepository.increaseHungerLevel(id);
+        return petRepository.increaseHungerLevel(id);
     }
 
     /**
@@ -114,9 +116,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void playWithPetById(int id) {
+    public PetDTO playWithPetById(int id) {
         assert petRepository != null;
-        petRepository.playWithPetById(id);
+        return petRepository.playWithPetById(id);
     }
 
     /**
@@ -124,9 +126,9 @@ public class PetService {
      *
      * @param id the id
      */
-    public void decreaseHappiness(int id) {
+    public PetDTO decreaseHappiness(int id) {
         assert petRepository != null;
-        petRepository.decreaseHappiness(id);
+        return petRepository.decreaseHappiness(id);
     }
 
     /**

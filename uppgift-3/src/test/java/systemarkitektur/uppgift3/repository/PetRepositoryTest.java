@@ -26,16 +26,13 @@ class PetRepositoryTest {
     }
 
     @Test
-    @DisplayName("Should create a pet in the repository, 2 versions")
-    void createPet() {
+    @DisplayName("Should create a pet in the repository")
+    void savePet() {
         PetDTO testPet = new PetDTO("Gustaf", "cat", 0,100);
-        petRepository.createPet(testPet);
+        petRepository.savePet(testPet);
         int repoLength = petRepository.getAllPets().size();
         assertEquals("Gustaf", petRepository.getPetById(repoLength).name());
         assertEquals(5, repoLength);
-        petRepository.createPet("Pelle", "dog");
-        assertNotNull(petRepository.getPetById(repoLength + 1));
-        assertEquals("Pelle", petRepository.getPetById(repoLength + 1).name());
     }
 
     @Test

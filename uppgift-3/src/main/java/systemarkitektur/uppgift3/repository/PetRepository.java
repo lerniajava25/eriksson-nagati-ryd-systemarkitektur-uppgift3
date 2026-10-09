@@ -6,9 +6,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.NotFoundException;
 import systemarkitektur.uppgift3.dto.PetDTO;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -26,48 +24,23 @@ public class PetRepository {
      */
     @Inject
     public PetRepository() {
-        // Loading some test data
-        createPet("Bella", "Dog");
-        createPet("Max", "Cat");
-        createPet("Charlie", "Dog");
-        createPet("Lucy", "Cat");
+        // Loading some testdata
+        this.pets.put(id.getAndIncrement(), new PetDTO("Bella", "Dog", 0, 100));
+        this.pets.put(id.getAndIncrement(), new PetDTO("Max", "Cat", 0, 100));
+        this.pets.put(id.getAndIncrement(), new PetDTO("Charlie", "Dog", 0, 100));
+        this.pets.put(id.getAndIncrement(), new PetDTO("Lucy", "Cat", 0, 100));
     }
 
     /**
-     * Create a pet from name, species, hungerLevel, happiness.
+     * Save pet.
      *
-     * @param name        the name
-     * @param species     the species
-     * @param hungerLevel the hunger level
-     * @param happiness   the happiness level
-     * @return the pet dto
+     * @param petDTO the input pet dto
+     * @return a pet dto
      */
-    public PetDTO createPet(String name, String species, int hungerLevel, int happiness) {
+    public PetDTO savePet(PetDTO petDTO) {
         long newId = id.getAndIncrement();
-        PetDTO newPetDTO = new @Valid PetDTO(name, species, hungerLevel, happiness);
-        pets.put(newId, newPetDTO);
-        return newPetDTO;
-    }
-
-    /**
-     * Create a pet from name and species.
-     *
-     * @param name    the name
-     * @param species the species
-     * @return the pet
-     */
-    public PetDTO createPet(String name, String species) {
-        return createPet(name, species, 0, 100);
-    }
-
-    /**
-     * Create a pet from a pet dto.
-     *
-     * @param petdto the pet
-     * @return the pet as PetDTO
-     */
-    public PetDTO createPet(@Valid PetDTO petdto) {
-        return createPet(petdto.name(), petdto.species(), petdto.hungerLevel(), petdto.happiness());
+        pets.put(newId, petDTO);
+        return petDTO;
     }
 
     /**
@@ -94,6 +67,32 @@ public class PetRepository {
                 .toList();
     }
 
+
+    /**
+     * Gets sorted pets.
+     *
+     * @param sortBy      the sort by
+     * @param isAscending the sort order is ascending
+     * @return the sorted pets
+     */
+    public List<PetDTO> getSortedPets(String sortBy, boolean isAscending) {
+        Comparator<Map.Entry<Long, PetDTO>> comparator = switch (sortBy.toLowerCase()) {
+            case "id" -> Map.Entry.comparingByKey();
+            case "name" -> Comparator.comparing(e -> e.getValue().name(), String.CASE_INSENSITIVE_ORDER);
+            case "species" -> Comparator.comparing(e -> e.getValue().species(), String.CASE_INSENSITIVE_ORDER);
+            case "hunger" -> Comparator.comparing(e -> e.getValue().hungerLevel());
+            case "happiness" -> Comparator.comparing(e -> e.getValue().happiness());
+            default -> Map.Entry.comparingByKey();
+        };
+        if (!isAscending) {
+            comparator = comparator.reversed();
+        }
+        return pets.entrySet().stream()
+                .sorted(comparator)
+                .map(Map.Entry::getValue)
+                .toList();
+    }
+
     /**
      * Gets pet by id.
      *
@@ -108,14 +107,13 @@ public class PetRepository {
         return pet;
     }
 
-
     /**
      * Delete pet by id.
      *
      * @param id the id
      */
-    public void deletePetById(long id) {
-        pets.remove(id);
+    public PetDTO deletePetById(long id) {
+        return pets.remove(id);
     }
 
     /**
@@ -123,14 +121,12 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void feedPetById(long id) {
-        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
-            int hungerLevel = Math.clamp(pet.hungerLevel() - 10L, 0, 100);
-            return new @Valid PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
-        });
+    public PetDTO feedPetById(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, PetRepository::feedPet);
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -138,14 +134,12 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void playWithPetById(long id) {
-        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
-            int happiness = Math.clamp(pet.happiness() + 10L, 0, 100);
-            return new @Valid PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
-        });
+    public PetDTO playWithPetById(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, PetRepository::playPet);
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -153,14 +147,12 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void increaseHungerLevel(long id) {
-        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
-            int hungerLevel = Math.clamp(pet.hungerLevel() + 10L, 0, 100);
-            return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
-        });
+    public PetDTO increaseHungerLevel(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, PetRepository::starvePet);
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
     }
 
     /**
@@ -168,13 +160,32 @@ public class PetRepository {
      *
      * @param id the id
      */
-    public void decreaseHappiness(long id) {
-        PetDTO updatedPet = pets.computeIfPresent(id, (key, pet) -> {
-            int happinessLevel = Math.clamp(pet.happiness() - 10L, 0, 100);
-            return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happinessLevel);
-        });
+    public PetDTO decreaseHappiness(long id) {
+        PetDTO updatedPet = pets.computeIfPresent(id, PetRepository::moreSadPet);
         if (updatedPet == null) {
             throw new NotFoundException("Pet with id " + id + " does not exist");
         }
+        return updatedPet;
+    }
+
+    // Private methods below ##############################################
+    private static PetDTO playPet(Long key, PetDTO pet) {
+        int happiness = Math.clamp(pet.happiness() + 10L, 0, 100);
+        return new @Valid PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happiness);
+    }
+
+    private static PetDTO feedPet(Long key, PetDTO pet) {
+        int hungerLevel = Math.clamp(pet.hungerLevel() - 10L, 0, 100);
+        return new @Valid PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
+    }
+
+    private static PetDTO starvePet(Long key, PetDTO pet) {
+        int hungerLevel = Math.clamp(pet.hungerLevel() + 10L, 0, 100);
+        return new PetDTO(pet.name(), pet.species(), hungerLevel, pet.happiness());
+    }
+
+    private static PetDTO moreSadPet(Long key, PetDTO pet) {
+        int happinessLevel = Math.clamp(pet.happiness() - 10L, 0, 100);
+        return new PetDTO(pet.name(), pet.species(), pet.hungerLevel(), happinessLevel);
     }
 }

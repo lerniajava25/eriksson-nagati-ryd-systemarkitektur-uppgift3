@@ -3,6 +3,10 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
+/**
+ * The type Pet dto.
+ */
 public record PetDTO(
 
         @NotBlank(message = "Name must not be blank")
