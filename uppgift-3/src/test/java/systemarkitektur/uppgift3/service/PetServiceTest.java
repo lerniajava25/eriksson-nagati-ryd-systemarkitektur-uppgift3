@@ -14,8 +14,8 @@ class PetServiceTest {
     PetRepository petRepository = new PetRepository();
     PetService petService = new PetService(petRepository);
 
-    PetDTO testPetDTO1 = new PetDTO("Bella", "Dog",0,100);
-    PetDTO testPetDTO2 = new PetDTO("Max", "Cat",0,100);
+    PetDTO testPetDTO1 = new PetDTO("Bella", "Dog", 0, 100);
+    PetDTO testPetDTO2 = new PetDTO("Max", "Cat", 0, 100);
 
     @Test
     @DisplayName("Should return all pets in the repository")
@@ -56,8 +56,11 @@ class PetServiceTest {
     void feedPetById() {
         petService.increaseHungerLevel(1);
         petService.increaseHungerLevel(1);
+
         assertEquals(20, petService.getPetById(1).hungerLevel());
+
         petService.feedPetById(1);
+
         assertEquals(10, petService.getPetById(1).hungerLevel());
     }
 
@@ -66,20 +69,50 @@ class PetServiceTest {
     void playWithPetById() {
         petService.decreaseHappiness(1);
         petService.decreaseHappiness(1);
-        assertEquals(80, petService.getPetById(1).happiness().shortValue());
+
+        assertEquals(
+                80,
+                petService.getPetById(1).happiness().shortValue()
+        );
+
         petService.playWithPetById(1);
-        assertEquals(90, petService.getPetById(1).happiness().shortValue());
+
+        assertEquals(
+                90,
+                petService.getPetById(1).happiness().shortValue()
+        );
     }
 
     @Test
     @DisplayName("Should get a sequence of pets")
     void getSequenceOfPets() {
-        List<PetDTO> pets = petService.getSequenceOfPets(2L, 3);
+        List<PetDTO> pets =
+                petService.getSequenceOfPets(2L, 3);
+
         assertAll(
                 () -> assertEquals(3, pets.size()),
                 () -> assertEquals("Max", pets.getFirst().name()),
                 () -> assertEquals("Charlie", pets.get(1).name()),
                 () -> assertEquals("Lucy", pets.get(2).name())
+        );
+    }
+
+    @Test
+    @DisplayName("Should filter pets by species")
+    void getPetsBySpecies() {
+        List<PetDTO> cats =
+                petService.getPetsBySpecies("cat");
+
+        assertAll(
+                () -> assertNotNull(cats),
+                () -> assertEquals(2, cats.size()),
+                () -> assertEquals("Max", cats.get(0).name()),
+                () -> assertEquals("Lucy", cats.get(1).name()),
+                () -> assertTrue(
+                        cats.stream()
+                                .allMatch(pet ->
+                                        pet.species().equalsIgnoreCase("cat"))
+                )
         );
     }
 }
